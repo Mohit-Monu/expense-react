@@ -10,6 +10,8 @@
 
 # production
 /build
+# credientials
+.env
 
 # misc
 .DS_Store

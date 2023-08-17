@@ -9,19 +9,28 @@ import SignUp from "./components/Auth/SignUp";
 import Header from "./components/Header/Header";
 import ErrorAlert from "./components/ErrorAlert/ErrorAlert";
 import { useState } from "react";
-
+import LogIn from "./components/Auth/LogIn";
+import Display from "./components/Display/Display";
 function App() {
-  const [ErrorAl,SetErrorAl]=useState(false)
-  const [Errormessage,SetErrorMessage]=useState("")
-  const [ErrorHead,SetErrorHead]=useState("")
+  const [ErrorAl, SetErrorAl] = useState(false);
+  const [Errormessage, SetErrorMessage] = useState("");
+  const [ErrorHead, SetErrorHead] = useState("");
+  const [IsLogin, SetIsLogin] = useState(false);
 
-  function ErrorAlertHandler(error,head){
-    if(ErrorAl===false){
-      SetErrorMessage(error)
-      SetErrorHead(head)
-      SetErrorAl(true)
-    }else{
-      SetErrorAl(false)
+  function ErrorAlertHandler(error, head) {
+    if (ErrorAl === false) {
+      SetErrorMessage(error);
+      SetErrorHead(head);
+      SetErrorAl(true);
+    } else {
+      SetErrorAl(false);
+    }
+  }
+  function LoginHandler() {
+    if (IsLogin === true) {
+      SetIsLogin(false);
+    } else {
+      SetIsLogin(true);
     }
   }
   return (
@@ -31,7 +40,7 @@ function App() {
           path="/"
           element={
             <>
-              <Header></Header>
+              <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
             </>
           }
         />
@@ -39,17 +48,47 @@ function App() {
           path="/signup"
           element={
             <>
-              {ErrorAl &&<ErrorAlert ErrorHead={ErrorHead} message={Errormessage} onHide={ErrorAlertHandler}></ErrorAlert>}
-              <Header></Header>
+              {ErrorAl && (
+                <ErrorAlert
+                  ErrorHead={ErrorHead}
+                  message={Errormessage}
+                  onHide={ErrorAlertHandler}
+                ></ErrorAlert>
+              )}
+              <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
               <SignUp error={ErrorAlertHandler}></SignUp>
             </>
           }
         />
-         <Route
+        <Route
           path="/login"
           element={
             <>
-              <Header></Header>
+              {ErrorAl && (
+                <ErrorAlert
+                  ErrorHead={ErrorHead}
+                  message={Errormessage}
+                  onHide={ErrorAlertHandler}
+                ></ErrorAlert>
+              )}
+              <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
+              <LogIn OnLogin={LoginHandler} error={ErrorAlertHandler}></LogIn>
+            </>
+          }
+        />
+        <Route
+          path="/expense"
+          element={
+            <>
+              {ErrorAl && (
+                <ErrorAlert
+                  ErrorHead={ErrorHead}
+                  message={Errormessage}
+                  onHide={ErrorAlertHandler}
+                ></ErrorAlert>
+              )}
+              <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
+              <Display></Display>
             </>
           }
         />

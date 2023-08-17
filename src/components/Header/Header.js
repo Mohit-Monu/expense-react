@@ -1,11 +1,16 @@
 import Button from "react-bootstrap/Button";
-import "./Header.css"
-import { NavLink } from "react-router-dom";
+import "./Header.css";
+import { NavLink,useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-function Header() {
-
+function Header(props) {
+  const navigate = useNavigate();
+  function LogoutHandler(){
+    localStorage.removeItem("token")
+    props.OnLogin()
+    navigate("/")
+  }
   return (
     <div>
       <Navbar expand="lg" className="bg-dark" variant="dark">
@@ -23,14 +28,26 @@ function Header() {
               <NavLink to="/contact">Contact Us</NavLink>
             </Nav>
           </Navbar.Collapse>
-          <div>
+          {!props.IsLogin &&
+            <div>
               <Button
                 style={{ display: "flex", float: "left", marginRight: "5px" }}
                 variant="outline-info"
               >
                 <NavLink to="/signup"> Log-In / Sign Up</NavLink>
               </Button>
-          </div>
+            </div>
+          }
+          {props.IsLogin &&
+            <div>
+              <Button
+                style={{ display: "flex", float: "left", marginRight: "5px" }}
+                variant="outline-info" onClick={LogoutHandler}
+              >
+                <NavLink to=""> Log-Out</NavLink>
+              </Button>
+            </div>
+          }
         </Container>
       </Navbar>
     </div>
