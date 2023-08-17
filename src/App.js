@@ -11,6 +11,7 @@ import ErrorAlert from "./components/ErrorAlert/ErrorAlert";
 import { useState } from "react";
 import LogIn from "./components/Auth/LogIn";
 import Display from "./components/Display/Display";
+import Profile from "./components/Profile/Profile";
 function App() {
   const [ErrorAl, SetErrorAl] = useState(false);
   const [Errormessage, SetErrorMessage] = useState("");
@@ -89,6 +90,22 @@ function App() {
               )}
               <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
               <Display></Display>
+            </>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <>
+              {ErrorAl && (
+                <ErrorAlert
+                  ErrorHead={ErrorHead}
+                  message={Errormessage}
+                  onHide={ErrorAlertHandler}
+                ></ErrorAlert>
+              )}
+              <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
+              <Profile></Profile>
             </>
           }
         />
