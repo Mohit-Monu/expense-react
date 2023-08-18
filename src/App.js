@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  // Navigate,
+  Navigate,
 } from "react-router-dom";
 import SignUp from "./components/Auth/SignUp";
 import Header from "./components/Header/Header";
@@ -14,7 +14,7 @@ import Display from "./components/Display/Display";
 import Profile from "./components/Profile/Profile";
 import ForgetPassword from "./components/Auth/ForgetPassword";
 import AddExpenses from "./components/AddExpenses/AddExpenses";
-import ShowExpenses from "./components/ShowExpenses/ShowExpenses"
+import ShowExpenses from "./components/ShowExpenses/ShowExpenses";
 function App() {
   const [ErrorAl, SetErrorAl] = useState(false);
   const [Errormessage, SetErrorMessage] = useState("");
@@ -99,34 +99,51 @@ function App() {
         <Route
           path="/expense"
           element={
-            <>
-              {ErrorAl && (
-                <ErrorAlert
-                  ErrorHead={ErrorHead}
-                  message={Errormessage}
-                  onHide={ErrorAlertHandler}
-                ></ErrorAlert>
-              )}
-              <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
-              <Display error={ErrorAlertHandler}></Display>
-              <AddExpenses error={ErrorAlertHandler}></AddExpenses>
-              <ShowExpenses></ShowExpenses>
-            </>
+            IsLogin ? (
+              <>
+                {ErrorAl && (
+                  <ErrorAlert
+                    ErrorHead={ErrorHead}
+                    message={Errormessage}
+                    onHide={ErrorAlertHandler}
+                  ></ErrorAlert>
+                )}
+                <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
+                <Display error={ErrorAlertHandler}></Display>
+                <AddExpenses error={ErrorAlertHandler}></AddExpenses>
+                <ShowExpenses></ShowExpenses>
+              </>
+            ) : (
+              <Navigate to="/login"></Navigate>
+            )
           }
         />
         <Route
           path="/profile"
           element={
+            IsLogin ? (
+              <>
+                {ErrorAl && (
+                  <ErrorAlert
+                    ErrorHead={ErrorHead}
+                    message={Errormessage}
+                    onHide={ErrorAlertHandler}
+                  ></ErrorAlert>
+                )}
+                <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
+                <Profile error={ErrorAlertHandler}></Profile>
+              </>
+            ) : (
+              <Navigate to="/login"></Navigate>
+            )
+          }
+        />
+
+        <Route
+          path="*"
+          element={
             <>
-              {ErrorAl && (
-                <ErrorAlert
-                  ErrorHead={ErrorHead}
-                  message={Errormessage}
-                  onHide={ErrorAlertHandler}
-                ></ErrorAlert>
-              )}
-              <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
-              <Profile error={ErrorAlertHandler}></Profile>
+              <Navigate to="/"></Navigate>
             </>
           }
         />
