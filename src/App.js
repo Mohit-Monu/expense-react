@@ -105,7 +105,7 @@ function App() {
                 ></ErrorAlert>
               )}
               <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
-              <Profile></Profile>
+              <Profile error={ErrorAlertHandler}></Profile>
             </>
           }
         />
