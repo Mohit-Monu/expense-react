@@ -20,7 +20,6 @@ function Profile(props) {
       };
       try {
         const res = await axios(config);
-        console.log(res.data.users[0]);
         const data=res.data.users[0]
         NameRef.current.value=data.displayName
         ProfileUrlRef.current.value=data.photoUrl

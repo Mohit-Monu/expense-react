@@ -89,7 +89,7 @@ function App() {
                 ></ErrorAlert>
               )}
               <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
-              <Display></Display>
+              <Display error={ErrorAlertHandler}></Display>
             </>
           }
         />
