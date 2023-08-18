@@ -1,50 +1,84 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ExpenseContext from "./Expense-context";
 import axios from "axios";
 const ExpenseProvider = (props) => {
   const [expenses, SetExpenses] = useState([]);
-  useEffect(()=>{
-    async function getexpenses() {
-      try {
-        SetExpenses([])
-        const config = {
-          method: "GET",
-          url: `https://e-commerce-ed719-default-rtdb.firebaseio.com/expenses.json`,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-        const res = await axios(config);
-        for (const key in res.data) {
-          const obj = {
-            id: key,
-            amount: res.data[key].amount,
-            category: res.data[key].category,
-            description: res.data[key].description,
-          };
-  
-          SetExpenses((previtem) => {
-            return [obj, ...previtem];
-          });
-        }
-      } catch (err) {
-        console.log(
-          err.response.data.error.message,
-          "Opps Something Went Wrong"
-        );
+  async function getExpenses() {
+    try {
+      const config = {
+        method: "GET",
+        url: `https://e-commerce-ed719-default-rtdb.firebaseio.com/expenses.json`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const res = await axios(config);
+      const fetchedExpenses = [];
+      for (const key in res.data) {
+        fetchedExpenses.push({
+          id: key,
+          amount: res.data[key].amount,
+          category: res.data[key].category,
+          description: res.data[key].description,
+        });
       }
+      SetExpenses(fetchedExpenses);
+    } catch (err) {
+      console.log(err.response.data.error.message, "Opps Something Went Wrong");
     }
-    getexpenses()
-  },[])
+  }
+  useEffect(() => {
+    getExpenses();
+  }, []);
 
-  console.log(expenses);
-  const addExpenseHandler = (item) => {
-    SetExpenses((previtem) => {
-      return [item, ...previtem];
-    });
-  };
-  const delExpenseHandler = (id) => {};
-  const editExpenseHandler = (id) => {};
+  async function addExpenseHandler(item) {
+    try {
+      const config = {
+        method: "POST",
+        url: `https://e-commerce-ed719-default-rtdb.firebaseio.com/expenses.json`,
+        data: item,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      await axios(config);
+    } catch (err) {
+      console.log(err.response.data.error.message, "Opps Something Went Wrong");
+    }
+    await getExpenses();
+  }
+  async function delExpenseHandler(id) {
+    try {
+      const config = {
+        method: "DELETE",
+        url: `https://e-commerce-ed719-default-rtdb.firebaseio.com/expenses/${id}.json`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      await axios(config);
+    } catch (err) {
+      console.log(err.response.data.error.message, "Opps Something Went Wrong");
+    }
+    await getExpenses();
+  }
+  async function editExpenseHandler(id) {
+    try{
+      const config={
+        method:"GET",
+        url:`https://e-commerce-ed719-default-rtdb.firebaseio.com/expenses/${id}.json`,
+        headers: {
+          "Content-Type": "application/json",
+        }
+      }
+      const res=await axios(config)
+      // delExpenseHandler(id)
+      return(res.data)
+    }catch(err){
+      console.log(err)
+    }
+  }
+
   const state = {
     expenses: expenses,
     addExpense: addExpenseHandler,

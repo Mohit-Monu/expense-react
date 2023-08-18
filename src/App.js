@@ -21,6 +21,12 @@ function App() {
   const [Errormessage, SetErrorMessage] = useState("");
   const [ErrorHead, SetErrorHead] = useState("");
   const [IsLogin, SetIsLogin] = useState(true);
+  const [EditObj, SetEditObj] = useState({
+    amount:"",
+    description:"",
+    category:""
+  });
+
 
   function ErrorAlertHandler(error, head) {
     if (ErrorAl === false) {
@@ -37,6 +43,9 @@ function App() {
     } else {
       SetIsLogin(true);
     }
+  }
+  function prefilledHandler(obj){
+    SetEditObj(obj)
   }
   return (
     <Router>
@@ -85,6 +94,7 @@ function App() {
           path="/forgetpass"
           element={
             <>
+            <ExpenseProvider>
               {ErrorAl && (
                 <ErrorAlert
                   ErrorHead={ErrorHead}
@@ -94,6 +104,7 @@ function App() {
               )}
               <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
               <ForgetPassword error={ErrorAlertHandler}></ForgetPassword>
+              </ExpenseProvider>
             </>
           }
         />
@@ -112,8 +123,8 @@ function App() {
                 )}
                 <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
                 <Display error={ErrorAlertHandler}></Display>
-                <AddExpenses error={ErrorAlertHandler}></AddExpenses>
-                <ShowExpenses></ShowExpenses>
+                <AddExpenses prefilled={EditObj} error={ErrorAlertHandler}></AddExpenses>
+                <ShowExpenses onPrefilled={prefilledHandler} ></ShowExpenses>
                 </ExpenseProvider>
               </>
             ) : (

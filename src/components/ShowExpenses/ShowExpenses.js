@@ -35,8 +35,15 @@ function ShowExpenses(props) {
     ),[]);
     SetTableCandy(expenses)
   }, [ExpenseCtx.expenses]);
-  function DeleteExpHandler() {}
-  function EditExpHandler() {}
+  function DeleteExpHandler(e) {
+    const id=e.target.value
+    ExpenseCtx.delExpense(id)
+  }
+  async function EditExpHandler(e) {
+    const id=e.target.value
+    const exp=await ExpenseCtx.editExpense(id)
+    props.onPrefilled(exp)
+  }
   return (
     <div className="container text-center">
       <h1>All Expenses</h1>

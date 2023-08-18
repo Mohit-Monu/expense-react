@@ -1,50 +1,33 @@
-import { useContext, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import "./AddExpenses.css";
-import axios from "axios";
-import ExpenseContext from "../../store/Expense-context"
+import ExpenseContext from "../../store/Expense-context";
 function AddExpenses(props) {
-
+  const [loader,SetLoader]=useState(false)
   const AmountRef = useRef();
   const DescreptionRef = useRef();
   const CategoryRef = useRef();
+  const ExpenseCtx = useContext(ExpenseContext);
+  async function AddExpenseHandler(e) {
+    SetLoader(true)
+    e.preventDefault();
+    const obj = {
+      amount: AmountRef.current.value,
+      description: DescreptionRef.current.value,
+      category: CategoryRef.current.value,
+    };
+    await ExpenseCtx.addExpense(obj);
+    SetLoader(false)
 
-  const ExpenseCtx=useContext(ExpenseContext)
-  async function AddExpenseHandler(e){
-    e.preventDefault()
-    try {
-      const config = {
-        method: "POST",
-        url: `https://e-commerce-ed719-default-rtdb.firebaseio.com/expenses.json`,
-        data: {
-          amount: AmountRef.current.value,
-          description: DescreptionRef.current.value,
-          category: CategoryRef.current.value,
-        },
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      const res=await axios(config)
-      const obj={
-        amount: AmountRef.current.value,
-        description: DescreptionRef.current.value,
-        category: CategoryRef.current.value,
-        id:res.data.name
-      }
-      ExpenseCtx.addExpense(obj)
-    } catch (err) {
-      props.error(err.response.data.error.message, "Opps Something Went Wrong");
-    }
   }
   return (
-    <form onSubmit={AddExpenseHandler} >
+    <form onSubmit={AddExpenseHandler}>
       <div className="login-box">
         <div className="login-header">
           <header>Add All Your Expenses Here.</header>
         </div>
         <div className="input-box">
           <input
-          ref={AmountRef}
+            ref={AmountRef}
             type="number"
             className="input-field"
             placeholder="Enter Your Expense Amount."
@@ -53,7 +36,7 @@ function AddExpenses(props) {
         </div>
         <div className="input-box">
           <input
-          ref={DescreptionRef}
+            ref={DescreptionRef}
             type="text"
             className="input-field"
             placeholder="Enter Your Product Discription."
@@ -73,8 +56,8 @@ function AddExpenses(props) {
           </select>
         </div>
         <div className="input-submit">
-          <input type="submit" className="submit-btn" />
-          <label htmlFor="submit">Submit</label>
+          <input type="submit" className="submit-btn"  disabled={loader}/>
+          <label htmlFor="submit" >{!loader ? "Submit":"Loading..."}</label>
         </div>
       </div>
     </form>
