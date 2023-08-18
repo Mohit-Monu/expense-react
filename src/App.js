@@ -21,11 +21,7 @@ function App() {
   const [Errormessage, SetErrorMessage] = useState("");
   const [ErrorHead, SetErrorHead] = useState("");
   const [IsLogin, SetIsLogin] = useState(true);
-  const [EditObj, SetEditObj] = useState({
-    amount:"",
-    description:"",
-    category:""
-  });
+  const [EditObj, SetEditObj] = useState();
 
 
   function ErrorAlertHandler(error, head) {

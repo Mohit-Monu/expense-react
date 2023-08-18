@@ -72,7 +72,7 @@ const ExpenseProvider = (props) => {
         }
       }
       const res=await axios(config)
-      // delExpenseHandler(id)
+      await delExpenseHandler(id)
       return(res.data)
     }catch(err){
       console.log(err)

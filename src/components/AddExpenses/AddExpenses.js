@@ -2,13 +2,13 @@ import { useContext, useEffect, useRef, useState } from "react";
 import "./AddExpenses.css";
 import ExpenseContext from "../../store/Expense-context";
 function AddExpenses(props) {
-  const [loader,SetLoader]=useState(false)
+  const [loader, SetLoader] = useState(false);
   const AmountRef = useRef();
   const DescreptionRef = useRef();
   const CategoryRef = useRef();
   const ExpenseCtx = useContext(ExpenseContext);
   async function AddExpenseHandler(e) {
-    SetLoader(true)
+    SetLoader(true);
     e.preventDefault();
     const obj = {
       amount: AmountRef.current.value,
@@ -16,8 +16,15 @@ function AddExpenses(props) {
       category: CategoryRef.current.value,
     };
     await ExpenseCtx.addExpense(obj);
-    SetLoader(false)
-
+    AmountRef.current.value = "";
+    DescreptionRef.current.value = "";
+    CategoryRef.current.value = "";
+    SetLoader(false);
+  }
+  if(props.prefilled){
+    AmountRef.current.value = props.prefilled.amount;
+    DescreptionRef.current.value = props.prefilled.description;
+    CategoryRef.current.value = props.prefilled.category
   }
   return (
     <form onSubmit={AddExpenseHandler}>
@@ -56,8 +63,20 @@ function AddExpenses(props) {
           </select>
         </div>
         <div className="input-submit">
-          <input type="submit" className="submit-btn"  disabled={loader}/>
-          <label htmlFor="submit" >{!loader ? "Submit":"Loading..."}</label>
+          <input type="submit" className="submit-btn" disabled={loader} />
+          <label htmlFor="submit">
+            {!loader ? (
+              "Submit"
+            ) : (
+              <>
+                <span
+                  className="spinner-grow spinner-grow-sm"
+                  aria-hidden="true"
+                ></span>
+                <span role="status">Loading...</span>
+              </>
+            )}
+          </label>
         </div>
       </div>
     </form>
