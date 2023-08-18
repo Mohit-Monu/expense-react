@@ -29,7 +29,6 @@ function LogIn(props) {
       props.OnLogin();
       navigate("/expense");
     } catch (err) {
-      console.log(err);
       props.error(err.response.data.error.message, "Opps Something Went Wrong");
     }
   }

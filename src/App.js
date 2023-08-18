@@ -13,6 +13,8 @@ import LogIn from "./components/Auth/LogIn";
 import Display from "./components/Display/Display";
 import Profile from "./components/Profile/Profile";
 import ForgetPassword from "./components/Auth/ForgetPassword";
+import AddExpenses from "./components/AddExpenses/AddExpenses";
+import ShowExpenses from "./components/ShowExpenses/ShowExpenses"
 function App() {
   const [ErrorAl, SetErrorAl] = useState(false);
   const [Errormessage, SetErrorMessage] = useState("");
@@ -107,6 +109,8 @@ function App() {
               )}
               <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
               <Display error={ErrorAlertHandler}></Display>
+              <AddExpenses error={ErrorAlertHandler}></AddExpenses>
+              <ShowExpenses></ShowExpenses>
             </>
           }
         />
