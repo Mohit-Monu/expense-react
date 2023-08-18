@@ -3,33 +3,27 @@ import Container from "react-bootstrap/Container";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import axios from "axios";
-function LogIn(props) {
-  const navigate = useNavigate();
+
+function ForgetPassword(props) {
   const EmailRef = useRef();
-  const PasswordRef = useRef();
-
-  async function LoginHandler(e) {
+  async function ResetPasswordHandler(e) {
     e.preventDefault();
-
     try {
       const config = {
         method: "POST",
-        url: `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_API_KEY}`,
+        url: `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${process.env.REACT_APP_API_KEY}`,
         data: {
           email: EmailRef.current.value,
-          password: PasswordRef.current.value,
-          returnSecureToken: true,
+          requestType:"PASSWORD_RESET"
         },
         headers: {
           "Content-Type": "application/json",
         },
       };
       const res = await axios(config);
-      localStorage.setItem("token", res.data.idToken);
-      props.OnLogin();
-      navigate("/expense");
+      console.log(res.data.email)
+      props.error(`Email was sent successfuly at ${res.data.email} please click on the link to verify and set new password `,"Email sent Successfully")
     } catch (err) {
-      console.log(err);
       props.error(err.response.data.error.message, "Opps Something Went Wrong");
     }
   }
@@ -39,10 +33,10 @@ function LogIn(props) {
       style={{ width: "500px" }}
     >
       <h1 className="mb-4" style={{ fontSize: "30px", color: "red" }}>
-        Log-In
+        Reset Password
       </h1>
       <hr />
-      <form onSubmit={LoginHandler}>
+      <form onSubmit={ResetPasswordHandler}>
         <Form.Floating className="mb-3">
           <Form.Control
             ref={EmailRef}
@@ -53,30 +47,18 @@ function LogIn(props) {
           />
           <label htmlFor="floatingInputCustom">Email address</label>
         </Form.Floating>
-        <Form.Floating className="mb-3">
-          <Form.Control
-            ref={PasswordRef}
-            id="floatingPasswordCustom"
-            type="password"
-            required
-            placeholder="Password"
-          />
-          <label htmlFor="floatingPasswordCustom">Password</label>
-        </Form.Floating>
         <div className="d-grid gap-2">
           <button type="submit" className="btn btn-dark mb-3">
-            Log-In
+            Send Link
           </button>
         </div>
-        <NavLink to="/signup" style={{ color: "black" }}>
-          Don't have an account? Sign up
+        <NavLink to="/login" style={{ color: "black" }}>
+          Have an account? Login
         </NavLink>
-        <br/>
-        <NavLink to="/forgetpass" style={{ color: "red" }}>
-          forget password?
-        </NavLink>
+
+        <br />
       </form>
     </Container>
   );
 }
-export default LogIn;
+export default ForgetPassword;

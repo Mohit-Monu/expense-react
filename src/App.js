@@ -12,6 +12,7 @@ import { useState } from "react";
 import LogIn from "./components/Auth/LogIn";
 import Display from "./components/Display/Display";
 import Profile from "./components/Profile/Profile";
+import ForgetPassword from "./components/Auth/ForgetPassword";
 function App() {
   const [ErrorAl, SetErrorAl] = useState(false);
   const [Errormessage, SetErrorMessage] = useState("");
@@ -74,6 +75,22 @@ function App() {
               )}
               <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
               <LogIn OnLogin={LoginHandler} error={ErrorAlertHandler}></LogIn>
+            </>
+          }
+        />
+        <Route
+          path="/forgetpass"
+          element={
+            <>
+              {ErrorAl && (
+                <ErrorAlert
+                  ErrorHead={ErrorHead}
+                  message={Errormessage}
+                  onHide={ErrorAlertHandler}
+                ></ErrorAlert>
+              )}
+              <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
+              <ForgetPassword error={ErrorAlertHandler}></ForgetPassword>
             </>
           }
         />
