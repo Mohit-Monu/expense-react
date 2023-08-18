@@ -1,32 +1,42 @@
-import { useEffect, useState } from "react";
-
+import { useContext, useEffect, useState } from "react";
+import ExpenseContext from "../../store/Expense-context";
 function ShowExpenses(props) {
   const [tableCandy, SetTableCandy] = useState();
-
+  const ExpenseCtx = useContext(ExpenseContext);
+  useEffect(() => {
+    SetTableCandy([])
+    const expenses = ExpenseCtx.expenses.map((element, index) => (
+      <tr key={index}>
+        <td>{index + 1}</td>
+        <td>Rs.{element.amount}</td>
+        <td>{element.description}</td>
+        <td>{element.category}</td>
+        <td>
+          <button
+            onClick={DeleteExpHandler}
+            className="btn btn-danger"
+            value={element.id}
+            style={{ marginRight: "6px" }}
+            type="button"
+          >
+            Delete
+          </button>
+          <button
+            onClick={EditExpHandler}
+            className="btn btn-secondary"
+            value={element.id}
+            style={{ marginRight: "6px" }}
+            type="button"
+          >
+            Edit
+          </button>
+        </td>
+      </tr>
+    ),[]);
+    SetTableCandy(expenses)
+  }, [ExpenseCtx.expenses]);
   function DeleteExpHandler() {}
-  // useEffect(() => {
-  //   SetTableCandy(() => {
-  //     return props.candys.map((element, index) => (
-  //       <tr key={element._id}>
-  //         <td>{index + 1}</td>
-  //         <td>{element.name}</td>
-  //         <td>{element.description}</td>
-  //         <td>Rs.{element.price}</td>
-  //         <td>
-  //           <button
-  //             onClick={DeleteExpHandler}
-  //             className="btn btn-danger"
-  //             value={element._id}
-  //             style={{ marginRight: "6px" }}
-  //             type="button"
-  //           >
-  //             Delete
-  //           </button>
-  //         </td>
-  //       </tr>
-  //     ));
-  //   });
-  // }, [props.candys]);
+  function EditExpHandler() {}
   return (
     <div className="container text-center">
       <h1>All Expenses</h1>
@@ -34,31 +44,14 @@ function ShowExpenses(props) {
         <thead>
           <tr>
             <th>Sl.no</th>
-            <th>Name</th>
+            <th>Amount</th>
             <th>Description</th>
-            <th>price</th>
+            <th>Category</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {/* {tableCandy} */}
-          <tr >
-            <td>ytdhgc</td>
-            <td>hcggchj</td>
-            <td>hghgvjvggjy</td>
-            <td>Rs.46</td>
-            <td>
-              <button
-                onClick={DeleteExpHandler}
-                className="btn btn-danger"
-                value="gughhg"
-                style={{ marginRight: "6px" }}
-                type="button"
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
+          {tableCandy}
         </tbody>
       </table>
     </div>

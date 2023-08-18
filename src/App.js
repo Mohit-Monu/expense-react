@@ -15,11 +15,12 @@ import Profile from "./components/Profile/Profile";
 import ForgetPassword from "./components/Auth/ForgetPassword";
 import AddExpenses from "./components/AddExpenses/AddExpenses";
 import ShowExpenses from "./components/ShowExpenses/ShowExpenses";
+import ExpenseProvider from "./store/ExpenseProvider"
 function App() {
   const [ErrorAl, SetErrorAl] = useState(false);
   const [Errormessage, SetErrorMessage] = useState("");
   const [ErrorHead, SetErrorHead] = useState("");
-  const [IsLogin, SetIsLogin] = useState(false);
+  const [IsLogin, SetIsLogin] = useState(true);
 
   function ErrorAlertHandler(error, head) {
     if (ErrorAl === false) {
@@ -101,6 +102,7 @@ function App() {
           element={
             IsLogin ? (
               <>
+                <ExpenseProvider>
                 {ErrorAl && (
                   <ErrorAlert
                     ErrorHead={ErrorHead}
@@ -112,6 +114,7 @@ function App() {
                 <Display error={ErrorAlertHandler}></Display>
                 <AddExpenses error={ErrorAlertHandler}></AddExpenses>
                 <ShowExpenses></ShowExpenses>
+                </ExpenseProvider>
               </>
             ) : (
               <Navigate to="/login"></Navigate>

@@ -1,29 +1,37 @@
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import "./AddExpenses.css";
-
+import axios from "axios";
+import ExpenseContext from "../../store/Expense-context"
 function AddExpenses(props) {
+
   const AmountRef = useRef();
   const DescreptionRef = useRef();
   const CategoryRef = useRef();
 
+  const ExpenseCtx=useContext(ExpenseContext)
   async function AddExpenseHandler(e){
     e.preventDefault()
     try {
       const config = {
         method: "POST",
-        url: `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_API_KEY}`,
+        url: `https://e-commerce-ed719-default-rtdb.firebaseio.com/expenses.json`,
         data: {
           amount: AmountRef.current.value,
           description: DescreptionRef.current.value,
           category: CategoryRef.current.value,
-          returnSecureToken: true,
         },
         headers: {
           "Content-Type": "application/json",
         },
       };
-      console.log(config)
-    //   const res = await axios(config);
+      const res=await axios(config)
+      const obj={
+        amount: AmountRef.current.value,
+        description: DescreptionRef.current.value,
+        category: CategoryRef.current.value,
+        id:res.data.name
+      }
+      ExpenseCtx.addExpense(obj)
     } catch (err) {
       props.error(err.response.data.error.message, "Opps Something Went Wrong");
     }
