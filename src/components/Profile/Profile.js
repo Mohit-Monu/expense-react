@@ -21,8 +21,12 @@ function Profile(props) {
       try {
         const res = await axios(config);
         const data=res.data.users[0]
-        NameRef.current.value=data.displayName
-        ProfileUrlRef.current.value=data.photoUrl
+        if(data.photoUrl){
+          ProfileUrlRef.current.value=data.photoUrl
+        }
+        if(data.displayName){
+          NameRef.current.value=data.displayName
+        }
 
       } catch (err) {
         props.error(err.response.data.error.message, "Opps Something Went Wrong");
@@ -48,7 +52,6 @@ function Profile(props) {
     };
     try {
       const res = await axios(config);
-      console.log(res);
     } catch (err) {
       props.error(err.response.data.error.message, "Opps Something Went Wrong");
     }

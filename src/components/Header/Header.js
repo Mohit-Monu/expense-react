@@ -27,9 +27,11 @@ function Header() {
               style={{ maxHeight: "100px" }}
               navbarScroll
             >
+              {isLoggedIn && <NavLink to="/expense">My Expenses</NavLink>}
               <NavLink to="/">Home</NavLink>
               <NavLink to="/about">About</NavLink>
-              <NavLink to="/contact">Contact Us</NavLink>
+              {isLoggedIn && <NavLink to="/profile">Profile</NavLink>}
+
             </Nav>
           </Navbar.Collapse>
           {!isLoggedIn &&
