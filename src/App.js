@@ -15,12 +15,12 @@ import Profile from "./components/Profile/Profile";
 import ForgetPassword from "./components/Auth/ForgetPassword";
 import AddExpenses from "./components/AddExpenses/AddExpenses";
 import ShowExpenses from "./components/ShowExpenses/ShowExpenses";
-import ExpenseProvider from "./store/ExpenseProvider"
+import { useSelector } from "react-redux";
 function App() {
+  const isLoggedIn=useSelector(state=>state.auth.isAuthenticated)
   const [ErrorAl, SetErrorAl] = useState(false);
   const [Errormessage, SetErrorMessage] = useState("");
   const [ErrorHead, SetErrorHead] = useState("");
-  const [IsLogin, SetIsLogin] = useState(true);
   const [EditObj, SetEditObj] = useState();
 
 
@@ -33,13 +33,6 @@ function App() {
       SetErrorAl(false);
     }
   }
-  function LoginHandler() {
-    if (IsLogin === true) {
-      SetIsLogin(false);
-    } else {
-      SetIsLogin(true);
-    }
-  }
   function prefilledHandler(obj){
     SetEditObj(obj)
   }
@@ -50,7 +43,7 @@ function App() {
           path="/"
           element={
             <>
-              <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
+              <Header></Header>
             </>
           }
         />
@@ -65,7 +58,7 @@ function App() {
                   onHide={ErrorAlertHandler}
                 ></ErrorAlert>
               )}
-              <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
+              <Header></Header>
               <SignUp error={ErrorAlertHandler}></SignUp>
             </>
           }
@@ -81,8 +74,8 @@ function App() {
                   onHide={ErrorAlertHandler}
                 ></ErrorAlert>
               )}
-              <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
-              <LogIn OnLogin={LoginHandler} error={ErrorAlertHandler}></LogIn>
+              <Header ></Header>
+              <LogIn error={ErrorAlertHandler}></LogIn>
             </>
           }
         />
@@ -90,7 +83,6 @@ function App() {
           path="/forgetpass"
           element={
             <>
-            <ExpenseProvider>
               {ErrorAl && (
                 <ErrorAlert
                   ErrorHead={ErrorHead}
@@ -98,18 +90,16 @@ function App() {
                   onHide={ErrorAlertHandler}
                 ></ErrorAlert>
               )}
-              <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
+              <Header ></Header>
               <ForgetPassword error={ErrorAlertHandler}></ForgetPassword>
-              </ExpenseProvider>
             </>
           }
         />
         <Route
           path="/expense"
           element={
-            IsLogin ? (
+            isLoggedIn ? (
               <>
-                <ExpenseProvider>
                 {ErrorAl && (
                   <ErrorAlert
                     ErrorHead={ErrorHead}
@@ -117,11 +107,10 @@ function App() {
                     onHide={ErrorAlertHandler}
                   ></ErrorAlert>
                 )}
-                <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
+                <Header></Header>
                 <Display error={ErrorAlertHandler}></Display>
                 <AddExpenses prefilled={EditObj} error={ErrorAlertHandler}></AddExpenses>
                 <ShowExpenses onPrefilled={prefilledHandler} ></ShowExpenses>
-                </ExpenseProvider>
               </>
             ) : (
               <Navigate to="/login"></Navigate>
@@ -131,7 +120,7 @@ function App() {
         <Route
           path="/profile"
           element={
-            IsLogin ? (
+            isLoggedIn ? (
               <>
                 {ErrorAl && (
                   <ErrorAlert
@@ -140,7 +129,7 @@ function App() {
                     onHide={ErrorAlertHandler}
                   ></ErrorAlert>
                 )}
-                <Header IsLogin={IsLogin} OnLogin={LoginHandler}></Header>
+                <Header></Header>
                 <Profile error={ErrorAlertHandler}></Profile>
               </>
             ) : (

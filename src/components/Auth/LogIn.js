@@ -3,14 +3,17 @@ import Container from "react-bootstrap/Container";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import axios from "axios";
+import { authActions } from "../../store/auth";
+import { useDispatch} from "react-redux";
 function LogIn(props) {
+  const dispatch=useDispatch()
   const navigate = useNavigate();
   const EmailRef = useRef();
   const PasswordRef = useRef();
 
   async function LoginHandler(e) {
     e.preventDefault();
-
+    
     try {
       const config = {
         method: "POST",
@@ -26,7 +29,7 @@ function LogIn(props) {
       };
       const res = await axios(config);
       localStorage.setItem("token", res.data.idToken);
-      props.OnLogin();
+      dispatch(authActions.login())
       navigate("/expense");
     } catch (err) {
       props.error(err.response.data.error.message, "Opps Something Went Wrong");

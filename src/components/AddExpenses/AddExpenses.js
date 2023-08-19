@@ -1,12 +1,21 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import "./AddExpenses.css";
-import ExpenseContext from "../../store/Expense-context";
+import { expensesActions } from "../../store/expense";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+
 function AddExpenses(props) {
+  const dispatch = useDispatch();
+  const editdetails=useSelector(state=>state.expense.editExpenses)
   const [loader, SetLoader] = useState(false);
   const AmountRef = useRef();
   const DescreptionRef = useRef();
   const CategoryRef = useRef();
-  const ExpenseCtx = useContext(ExpenseContext);
+  if (editdetails!=null) {
+    AmountRef.current.value = editdetails[0].amount;
+    DescreptionRef.current.value = editdetails[0].description;
+    CategoryRef.current.value = editdetails[0].category;
+  }
   async function AddExpenseHandler(e) {
     SetLoader(true);
     e.preventDefault();
@@ -15,16 +24,21 @@ function AddExpenses(props) {
       description: DescreptionRef.current.value,
       category: CategoryRef.current.value,
     };
-    await ExpenseCtx.addExpense(obj);
+    const config = {
+      method: "POST",
+      url: `https://e-commerce-ed719-default-rtdb.firebaseio.com/expenses.json`,
+      data: obj,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const id = await axios(config);
+    const objWithId = { ...obj, id: id.data.name };
+    dispatch(expensesActions.addExpense(objWithId));
     AmountRef.current.value = "";
     DescreptionRef.current.value = "";
     CategoryRef.current.value = "";
     SetLoader(false);
-  }
-  if(props.prefilled){
-    AmountRef.current.value = props.prefilled.amount;
-    DescreptionRef.current.value = props.prefilled.description;
-    CategoryRef.current.value = props.prefilled.category
   }
   return (
     <form onSubmit={AddExpenseHandler}>

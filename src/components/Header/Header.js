@@ -4,11 +4,15 @@ import { NavLink,useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-function Header(props) {
+import { authActions } from "../../store/auth";
+import { useDispatch, useSelector } from "react-redux";
+function Header() {
+  const dispatch=useDispatch()
+  const isLoggedIn =useSelector(state=>state.auth.isAuthenticated)
   const navigate = useNavigate();
   function LogoutHandler(){
     localStorage.removeItem("token")
-    props.OnLogin()
+    dispatch(authActions.logout())
     navigate("/")
   }
   return (
@@ -28,7 +32,7 @@ function Header(props) {
               <NavLink to="/contact">Contact Us</NavLink>
             </Nav>
           </Navbar.Collapse>
-          {!props.IsLogin &&
+          {!isLoggedIn &&
             <div>
               <Button
                 style={{ display: "flex", float: "left", marginRight: "5px" }}
@@ -38,7 +42,7 @@ function Header(props) {
               </Button>
             </div>
           }
-          {props.IsLogin &&
+          {isLoggedIn &&
             <div>
               <Button
                 style={{ display: "flex", float: "left", marginRight: "5px" }}
