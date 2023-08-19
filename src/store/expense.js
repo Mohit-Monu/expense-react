@@ -17,18 +17,18 @@ for (const key in res.data) {
     description: res.data[key].description,
   });
 }
-const initialexpenses = { expenses: fetchedExpenses,editExpense:null };
+const initialexpenses = { expenses: fetchedExpenses,editExpenses:null };
 const expensesSlice = createSlice({
   name: "expenses",
   initialState: initialexpenses,
   reducers: {
     addExpense (state, action) {
+      state.editExpenses=null
       state.expenses=[action.payload,...state.expenses]
-      state.editExpense=null
     },
     delExpense(state, action) {
+      state.editExpenses=null
       state.expenses = state.expenses.filter((item)=>item.id!==action.payload)
-      state.editExpense=null
     },
     editExpense(state, action) {
       state.editExpenses=state.expenses.filter((item)=>item.id===action.payload)

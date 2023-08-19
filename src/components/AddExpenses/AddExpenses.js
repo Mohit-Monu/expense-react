@@ -34,10 +34,10 @@ function AddExpenses(props) {
     };
     const id = await axios(config);
     const objWithId = { ...obj, id: id.data.name };
-    dispatch(expensesActions.addExpense(objWithId));
     AmountRef.current.value = "";
     DescreptionRef.current.value = "";
     CategoryRef.current.value = "";
+    dispatch(expensesActions.addExpense(objWithId));
     SetLoader(false);
   }
   return (

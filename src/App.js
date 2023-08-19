@@ -21,8 +21,6 @@ function App() {
   const [ErrorAl, SetErrorAl] = useState(false);
   const [Errormessage, SetErrorMessage] = useState("");
   const [ErrorHead, SetErrorHead] = useState("");
-  const [EditObj, SetEditObj] = useState();
-
 
   function ErrorAlertHandler(error, head) {
     if (ErrorAl === false) {
@@ -32,9 +30,6 @@ function App() {
     } else {
       SetErrorAl(false);
     }
-  }
-  function prefilledHandler(obj){
-    SetEditObj(obj)
   }
   return (
     <Router>
@@ -109,8 +104,8 @@ function App() {
                 )}
                 <Header></Header>
                 <Display error={ErrorAlertHandler}></Display>
-                <AddExpenses prefilled={EditObj} error={ErrorAlertHandler}></AddExpenses>
-                <ShowExpenses onPrefilled={prefilledHandler} ></ShowExpenses>
+                <AddExpenses  error={ErrorAlertHandler}></AddExpenses>
+                <ShowExpenses ></ShowExpenses>
               </>
             ) : (
               <Navigate to="/login"></Navigate>
