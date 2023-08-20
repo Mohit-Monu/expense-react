@@ -81,16 +81,18 @@ function Display(props) {
   function enableDarkHandler() {
     dispatch(premiumActions.theme());
   }
-  function DownloadExpensesHandler(){
-    const blob=new Blob(initialexpenses,{type:'text/csv'})
-    console.log(initialexpenses)
+   function DownloadExpensesHandler() {
+    let str=""
+    initialexpenses.forEach( (expense) => {
+      str+=`id:- ${expense.id} amount:- ${expense.amount} category:- ${expense.category} description:- ${expense.description} \n`
+    });
+    const blob = new Blob([str], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = 'expenses.csv';
+    a.download = "expenses.csv";
     a.click();
     URL.revokeObjectURL(url);
-    
   }
   return (
     <div>
