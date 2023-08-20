@@ -6,7 +6,7 @@ import axios from "axios";
 
 function AddExpenses(props) {
   const theme = useSelector((state) => state.premium.theme);
-
+  const email=useSelector(state=>state.auth.email)
   const dispatch = useDispatch();
   const editdetails=useSelector(state=>state.expense.editExpenses)
   const [loader, SetLoader] = useState(false);
@@ -28,7 +28,7 @@ function AddExpenses(props) {
     };
     const config = {
       method: "POST",
-      url: `https://e-commerce-ed719-default-rtdb.firebaseio.com/expenses.json`,
+      url: `https://e-commerce-ed719-default-rtdb.firebaseio.com/expenses/${email}.json`,
       data: obj,
       headers: {
         "Content-Type": "application/json",

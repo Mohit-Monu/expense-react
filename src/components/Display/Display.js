@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Form from "react-bootstrap/Form";
 function Display(props) {
   const theme = useSelector((state) => state.premium.theme);
+  const isLogged=useSelector(state=>state.auth.isAuthenticated)
   const dispatch = useDispatch();
   const isPremium = useSelector((state) => state.premium.isPremium);
   const initialexpenses = useSelector((state) => state.expense.expenses);
@@ -17,6 +18,7 @@ function Display(props) {
     async function PageLoader() {
       try {
         const token = localStorage.getItem("token");
+        if(token !=null){
         const config = {
           method: "Post",
           data: {
@@ -45,7 +47,7 @@ function Display(props) {
           }
         } else {
           setBuyPreBtn(false);
-        }
+        }}
       } catch (err) {
         props.error(
           err.response.data.error.message,
@@ -99,7 +101,7 @@ function Display(props) {
       <Container fluid className="text-center mb-1 bg-success pt-4 pb-4">
         <h1 style={{ fontSize: "50px" }}>Welcome to Expense Tracker!!!</h1>
       </Container>
-      <div style={{ height: "50px" }}>
+      {isLogged &&<div style={{ height: "50px" }}>
         <button
           onClick={VerifyEmailHandler}
           className="btn btn-danger"
@@ -116,7 +118,7 @@ function Display(props) {
             Buy Premium
           </button>
         )}
-        {!BuyPreBtn && (
+        {isPremium && (
           <button
             onClick={DownloadExpensesHandler}
             className="btn btn-success"
@@ -125,7 +127,7 @@ function Display(props) {
             Download Expenses
           </button>
         )}
-        {!BuyPreBtn && (
+        {isPremium && (
           <div>
             <Form style={{ float: "left", marginLeft: "20px" }}>
               <Form.Check
@@ -159,7 +161,7 @@ function Display(props) {
             </span>
           </div>
         )}
-      </div>
+      </div>}
     </div>
   );
 }

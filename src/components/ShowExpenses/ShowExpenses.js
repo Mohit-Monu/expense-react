@@ -5,6 +5,8 @@ import axios from "axios";
 
 function ShowExpenses() {
   const theme=useSelector(state=>state.premium.theme)
+  const email=useSelector(state=>state.auth.email)
+
   const dispatch = useDispatch();
   const initialexpenses = useSelector((state) => state.expense.expenses);
   const [tableCandy, SetTableCandy] = useState();
@@ -40,14 +42,14 @@ function ShowExpenses() {
       </tr>
     ));
     SetTableCandy(expenses);
-  }, [initialexpenses]);
+  }, [initialexpenses,email]);
   async function DeleteExpHandler(e) {
     e.target.innerHTML = "Loading...";
     e.target.disabled = true;
     const id = e.target.value;
     const config = {
       method: "DELETE",
-      url: `https://e-commerce-ed719-default-rtdb.firebaseio.com/expenses/${id}.json`,
+      url: `https://e-commerce-ed719-default-rtdb.firebaseio.com/expenses/${email}/${id}.json`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -63,7 +65,7 @@ function ShowExpenses() {
     const id = e.target.value;
     const config = {
       method: "DELETE",
-      url: `https://e-commerce-ed719-default-rtdb.firebaseio.com/expenses/${id}.json`,
+      url: `https://e-commerce-ed719-default-rtdb.firebaseio.com/expenses/${email}/${id}.json`,
       headers: {
         "Content-Type": "application/json",
       },

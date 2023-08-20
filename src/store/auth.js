@@ -1,18 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 let local = false;
-if (localStorage.getItem("token") != null) {
+let localemail=null
+if (localStorage.getItem("email") != null) {
+  localemail = localStorage.getItem("email")
   local = true;
 }
-const initialAuthState = { isAuthenticated: local };
+const initialAuthState = { isAuthenticated: local,email:localemail };
 const authSlice = createSlice({
   name: "authentication",
   initialState: initialAuthState,
   reducers: {
-    login(state) {
+    login(state,action) {
       state.isAuthenticated = true;
+      state.email=action.payload
     },
-    logout(state) {
+    logout(state,action) {
       state.isAuthenticated = false;
+      state.email=null
     },
   },
 });

@@ -5,21 +5,25 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { authActions } from "../../store/auth";
+import { expensesActions } from "../../store/expense";
 import { useDispatch, useSelector } from "react-redux";
 function Header() {
   const dispatch=useDispatch()
   const isLoggedIn =useSelector(state=>state.auth.isAuthenticated)
+
   const navigate = useNavigate();
   function LogoutHandler(){
     localStorage.removeItem("token")
+    localStorage.removeItem("email")
     dispatch(authActions.logout())
+    dispatch(expensesActions.initialExp([]))
     navigate("/")
   }
   return (
     <div>
       <Navbar expand="lg" className="bg-dark" variant="dark">
         <Container fluid>
-          <Navbar.Brand href="/">E-Commerce</Navbar.Brand>
+          <Navbar.Brand href="/">Expense Tracker</Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav

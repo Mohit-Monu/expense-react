@@ -29,6 +29,7 @@ function SignUp(props) {
         await axios(config)
         props.error("User has successfully signed up","Account Created Successfully")
       }catch(err){
+        console.log(err)
         props.error(err.response.data.error.message,"Opps Something Went Wrong")
       }
     }

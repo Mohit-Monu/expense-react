@@ -8,28 +8,32 @@ function Profile(props) {
   useEffect(() => {
     async function PageLoader() {
       const token = localStorage.getItem("token");
-      const config = {
-        method: "Post",
-        data: {
-          idToken: token,
-        },
-        url: `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${process.env.REACT_APP_API_KEY}`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      try {
-        const res = await axios(config);
-        const data=res.data.users[0]
-        if(data.photoUrl){
-          ProfileUrlRef.current.value=data.photoUrl
+      if (token != null) {
+        const config = {
+          method: "Post",
+          data: {
+            idToken: token,
+          },
+          url: `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${process.env.REACT_APP_API_KEY}`,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        try {
+          const res = await axios(config);
+          const data = res.data.users[0];
+          if (data.photoUrl) {
+            ProfileUrlRef.current.value = data.photoUrl;
+          }
+          if (data.displayName) {
+            NameRef.current.value = data.displayName;
+          }
+        } catch (err) {
+          // props.error(
+          //   err.response.data.error.message,
+          //   "Opps Something Went Wrong"
+          // );
         }
-        if(data.displayName){
-          NameRef.current.value=data.displayName
-        }
-
-      } catch (err) {
-        props.error(err.response.data.error.message, "Opps Something Went Wrong");
       }
     }
     PageLoader();

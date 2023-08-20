@@ -1,27 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-const config = {
-  method: "GET",
-  url: `https://e-commerce-ed719-default-rtdb.firebaseio.com/expenses.json`,
-  headers: {
-    "Content-Type": "application/json",
-  },
-};
-const res = await axios(config);
-const fetchedExpenses = [];
-for (const key in res.data) {
-  fetchedExpenses.push({
-    id: key,
-    amount: res.data[key].amount,
-    category: res.data[key].category,
-    description: res.data[key].description,
-  });
-}
-const initialexpenses = { expenses: fetchedExpenses,editExpenses:null};
+
+const initialexpenses = { expenses: [],editExpenses:null};
 const expensesSlice = createSlice({
   name: "expenses",
   initialState: initialexpenses,
   reducers: {
+    initialExp(state,action){
+      state.expenses=action.payload
+    },
     addExpense (state, action) {
       state.editExpenses=null
       state.expenses=[action.payload,...state.expenses]

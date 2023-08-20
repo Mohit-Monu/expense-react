@@ -4,16 +4,17 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import axios from "axios";
 import { authActions } from "../../store/auth";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
+import { expensesActions } from "../../store/expense";
 function LogIn(props) {
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const EmailRef = useRef();
   const PasswordRef = useRef();
 
   async function LoginHandler(e) {
     e.preventDefault();
-    
+
     try {
       const config = {
         method: "POST",
@@ -29,7 +30,13 @@ function LogIn(props) {
       };
       const res = await axios(config);
       localStorage.setItem("token", res.data.idToken);
-      dispatch(authActions.login())
+
+      const cleanedEmail = await EmailRef.current.value.replace(
+        /[^a-zA-Z0-9]/g,
+        ""
+      );
+      localStorage.setItem("email", cleanedEmail);
+      dispatch(authActions.login(cleanedEmail));
       navigate("/expense");
     } catch (err) {
       props.error(err.response.data.error.message, "Opps Something Went Wrong");
@@ -73,7 +80,7 @@ function LogIn(props) {
         <NavLink to="/signup" style={{ color: "black" }}>
           Don't have an account? Sign up
         </NavLink>
-        <br/>
+        <br />
         <NavLink to="/forgetpass" style={{ color: "red" }}>
           forget password?
         </NavLink>
