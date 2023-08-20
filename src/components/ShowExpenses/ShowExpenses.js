@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
 function ShowExpenses() {
+  const theme=useSelector(state=>state.premium.theme)
   const dispatch = useDispatch();
   const initialexpenses = useSelector((state) => state.expense.expenses);
   const [tableCandy, SetTableCandy] = useState();
@@ -69,12 +70,15 @@ function ShowExpenses() {
     };
     await axios(config);
     dispatch(expensesActions.editExpense(id));
+    setTimeout(()=>{
+    dispatch(expensesActions.editToNull());
+    },1000)
     e.target.disabled = false;
     e.target.innerHTML = "Edit";
   }
   return (
     <div className="container text-center">
-      <h1>All Expenses</h1>
+      <h1 className={`text-${theme==="dark"?"light":"dark"}`}>All Expenses</h1>
       <table className="table table-striped">
         <thead>
           <tr>

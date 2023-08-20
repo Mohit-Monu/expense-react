@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
 function AddExpenses(props) {
+  const theme = useSelector((state) => state.premium.theme);
+
   const dispatch = useDispatch();
   const editdetails=useSelector(state=>state.expense.editExpenses)
   const [loader, SetLoader] = useState(false);
@@ -41,10 +43,10 @@ function AddExpenses(props) {
     SetLoader(false);
   }
   return (
-    <form onSubmit={AddExpenseHandler}>
-      <div className="login-box">
+    <form onSubmit={AddExpenseHandler} >
+      <div className="login-box" >
         <div className="login-header">
-          <header>Add All Your Expenses Here.</header>
+          <header className={`text-${theme==="dark"?"light":"dark"}`}>Add All Your Expenses Here.</header>
         </div>
         <div className="input-box">
           <input
@@ -76,9 +78,9 @@ function AddExpenses(props) {
             <option value="Others.">Others.</option>
           </select>
         </div>
-        <div className="input-submit">
-          <input type="submit" className="submit-btn" disabled={loader} />
-          <label htmlFor="submit">
+        <div className="input-submit ">
+          <input type="submit" className={`submit-btn bg-light bg-${theme==="dark"?"light":"dark"}`} id="submit" disabled={loader} value="" />
+          <label htmlFor="submit" className={`text-${theme}`}>
             {!loader ? (
               "Submit"
             ) : (

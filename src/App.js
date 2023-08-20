@@ -21,7 +21,7 @@ function App() {
   const [ErrorAl, SetErrorAl] = useState(false);
   const [Errormessage, SetErrorMessage] = useState("");
   const [ErrorHead, SetErrorHead] = useState("");
-
+  const theme = useSelector((state) => state.premium.theme);
   function ErrorAlertHandler(error, head) {
     if (ErrorAl === false) {
       SetErrorMessage(error);
@@ -94,7 +94,7 @@ function App() {
           path="/expense"
           element={
             isLoggedIn ? (
-              <>
+              <div className={`bg-${theme}`}>
                 {ErrorAl && (
                   <ErrorAlert
                     ErrorHead={ErrorHead}
@@ -106,7 +106,7 @@ function App() {
                 <Display error={ErrorAlertHandler}></Display>
                 <AddExpenses  error={ErrorAlertHandler}></AddExpenses>
                 <ShowExpenses ></ShowExpenses>
-              </>
+              </div>
             ) : (
               <Navigate to="/login"></Navigate>
             )
