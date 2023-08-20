@@ -18,7 +18,6 @@ import ShowExpenses from "./components/ShowExpenses/ShowExpenses";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { expensesActions } from "./store/expense";
-let initial = 0;
 function App() {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.isAuthenticated);
@@ -60,7 +59,7 @@ function App() {
         }
         getdata();
       }
-  }, [email]);
+  },[email,dispatch]);
   return (
     <Router>
       <Routes>

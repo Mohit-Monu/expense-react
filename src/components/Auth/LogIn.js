@@ -5,7 +5,6 @@ import { useRef } from "react";
 import axios from "axios";
 import { authActions } from "../../store/auth";
 import { useDispatch } from "react-redux";
-import { expensesActions } from "../../store/expense";
 function LogIn(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
